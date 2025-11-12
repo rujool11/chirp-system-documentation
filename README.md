@@ -93,11 +93,20 @@ Chirp follows a **microservices-based architecture** built with a clear separati
 ![Chirp System Architecture](figures/arch.png)
 
 
-### Database Design 
+## 🗄️ Database Design
 
-design
+The **Chirp** backend uses a **PostgreSQL (Neon Serverless)** database to manage user data, posts, and social interactions efficiently.  
 
-### 🗄️ Database ER Diagram
+- **Users** — Stores core profile data and user statistics (followers, following, likes, posts).  
+- **Posts** — Represents individual posts made by users, tracking likes and comment counts.  
+- **Comments** — Handles user comments on posts, linked to both users and posts.  
+- **PostLikes** — Maps users to posts they have liked (many-to-many relationship).  
+- **CommentLikes** — Maps users to comments they have liked.  
+- **Follow** — Tracks the follower/following relationships between users.
+
+All foreign key constraints use **`ON DELETE CASCADE`** to ensure dependent records are automatically removed when a parent entity is deleted.
+
+### ER Diagram
 
 ```mermaid
 erDiagram
