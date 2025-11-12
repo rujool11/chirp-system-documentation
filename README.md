@@ -169,3 +169,81 @@ erDiagram
     POSTS ||--o{ POST_LIKES : "liked by"
     COMMENTS ||--o{ COMMENT_LIKES : "liked by"
     FOLLOW }o--|| USERS : "is followed by"
+  ```
+
+## ⚙️ CI/CD Strategy
+
+The **Chirp** project uses a robust Jenkins-based CI/CD pipeline to automate builds, Docker image pushes, and Kubernetes deployments. The setup ensures consistent, versioned deployments across all microservices.
+
+---
+
+### 🧩 Overview
+
+| Stage | Pipeline | Description |
+|-------|-----------|--------------|
+| 🏗️ **CI (Continuous Integration)** | `Chirp-CI` | Builds Docker images for microservices and pushes them to DockerHub. Updates K8s manifests in the `chirp-cicd` repo. |
+| 🚀 **CD (Continuous Deployment)** | `Chirp-CD` | Deploys updated manifests to Minikube using `kubectl`. Verifies rollout success and prints service endpoints. |
+
+---
+
+### 🧱 CI Pipeline (Build and Push)
+
+The CI pipeline (`Chirp-CI`) is defined in Jenkins.
+
+#### Key Stages:
+1. **Clone Microservice Repo**
+   - Dynamically clones the specified microservice repo from GitHub.
+
+2. **Inject Environment Variables**
+   - Writes `.env` file inside each microservice based on Jenkins credentials:
+
+3. **Build and Push Docker Image**
+   - Extracts the current image version from the `chirp-cicd/k8s` manifest.
+   - Increments version tag (`v0.x`) automatically.
+   - Builds Docker image and pushes to DockerHub:  
+     `rujool11/<service-name>:v0.x`
+
+4. **Update K8s Manifest**
+   - Updates the image tag in the service’s Kubernetes deployment YAML so that CD pipeline always deploys latest image.
+   - Commits and pushes the updated manifest to the `chirp-cicd` repo.
+
+5. **Trigger CD Pipeline**
+   - Automatically triggers the `Chirp-CD` pipeline with new version info.
+
+#### 🧠 Parameters
+| Parameter | Description |
+|------------|-------------|
+| `SERVICE_REPO` | Git URL of microservice (e.g., `https://github.com/rujool11/chirp-auth-service.git`) |
+| `SERVICE_NAME` | One of `auth-service`, `core-service`, or `api-gateway` |
+
+---
+
+### ☸️ CD Pipeline (Deploy to Kubernetes)
+
+The CD pipeline (`Chirp-CD`) handles deployment of all services inside local **Minikube**.
+
+#### Key Stages:
+1. **Clone CICD Repo**
+   - Clones the latest `chirp-cicd` repo from GitHub.
+
+2. **Apply Kubernetes Manifests**
+   - Runs `kubectl apply -f k8s/` to apply all manifests.
+   - Waits for each deployment to successfully roll out:
+     - `auth-service`
+     - `core-service`
+     - `api-gateway`
+
+3. **Expose Services**
+   - Retrieves the Minikube IP.
+   - Prints accessible service URLs:
+     ```
+     auth-service -> http://<minikube-ip>:30001
+     core-service -> http://<minikube-ip>:30002
+     api-gateway -> http://<minikube-ip>:30000
+     ```
+
+---
+
+### 🐳 Jenkins Setup Script
+
+A `run-jenkins.sh` script is provided to spin up Jenkins with Docker and Kubernetes access preconfigured, and provides an easy way to quickly set up Jenkins for this project.
