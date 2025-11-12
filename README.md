@@ -247,3 +247,22 @@ The CD pipeline (`Chirp-CD`) handles deployment of all services inside local **M
 ### 🐳 Jenkins Setup Script
 
 A `run-jenkins.sh` script is provided to spin up Jenkins with Docker and Kubernetes access preconfigured, and provides an easy way to quickly set up Jenkins for this project.
+
+### CI/CD Flow 
+![CICD Flow](./figures/cicd_flow.png)
+
+### 🧩 Continuous Integration Pipeline 
+![CI Pipeline](./figures/ci.png)
+
+### 🚀 Continuous Deployment Pipeline
+![CD Pipeline](./figures/cd.png)
+
+### 🏷️ Versioning Commits
+![Commit Flow](./figures/commits.png)
+
+### ☸️ Minikube Services & Exposed Endpoints
+ Kubernetes Deployment (kubectl apply)
+![kubectl Apply](./figures/kubectl.png)
+
+### ☸️ Minikube Services & Exposed Endpoints
+![Minikube Services](./figures/minikube_service.png)
