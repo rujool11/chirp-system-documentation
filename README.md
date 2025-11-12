@@ -92,3 +92,71 @@ Chirp follows a **microservices-based architecture** built with a clear separati
 
 ![Chirp System Architecture](figures/arch.png)
 
+
+### Database Design 
+
+design
+
+### 🗄️ Database ER Diagram
+
+```mermaid
+erDiagram
+    USERS {
+        INT id PK
+        VARCHAR(50) username UNIQUE
+        VARCHAR(50) email UNIQUE
+        VARCHAR(255) password_hash
+        TEXT bio
+        INT likes_count
+        INT followers_count
+        INT following_count
+        INT tweets_count
+        TIMESTAMP created_at
+    }
+
+    POSTS {
+        INT id PK
+        INT user_id FK
+        TEXT content
+        INT likes_count
+        INT comments_count
+        TIMESTAMP created_at
+    }
+
+    COMMENTS {
+        INT id PK
+        INT post_id FK
+        INT user_id
+        TEXT content
+        INT likes_count
+        TIMESTAMP created_at
+    }
+
+    POST_LIKES {
+        INT user_id FK
+        INT post_id FK
+        TIMESTAMP created_at
+    }
+
+    COMMENT_LIKES {
+        INT user_id
+        INT comment_id FK
+        TIMESTAMP created_at
+    }
+
+    FOLLOW {
+        INT follower_id FK
+        INT following_id FK
+        TIMESTAMP created_at
+    }
+
+    %% Relationships
+    USERS ||--o{ POSTS : "creates"
+    USERS ||--o{ COMMENTS : "writes"
+    USERS ||--o{ POST_LIKES : "likes"
+    USERS ||--o{ COMMENT_LIKES : "likes"
+    USERS ||--o{ FOLLOW : "follows"
+    POSTS ||--o{ COMMENTS : "has"
+    POSTS ||--o{ POST_LIKES : "liked by"
+    COMMENTS ||--o{ COMMENT_LIKES : "liked by"
+    FOLLOW }o--|| USERS : "is followed by"
