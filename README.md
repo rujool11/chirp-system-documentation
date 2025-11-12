@@ -10,6 +10,14 @@
 ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
 
+Repository links ->
+- [chirp-frontend](https://github.com/rujool11/chirp-frontend)
+- [chirp-auth-service](https://github.com/rujool11/chirp-auth-service)
+- [chirp-core-service](https://github.com/rujool11/chirp-core-service)
+- [chirp-api-gateway](https://github.com/rujool11/chirp-api-gateway)
+- [chirp-cicd](https://github.com/rujool11/chirp-cicd)
+
+
 
 ## 📘 Overview
 
@@ -266,3 +274,5 @@ A `run-jenkins.sh` script is provided to spin up Jenkins with Docker and Kuberne
 
 ### ☸️ Minikube Services & Exposed Endpoints
 ![Minikube Services](./figures/minikube_service.png)
+
+---
